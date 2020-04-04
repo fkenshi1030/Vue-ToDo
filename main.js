@@ -33,6 +33,16 @@ new Vue ({
     ]
   },
 
+    computed: {
+      computedTodos: function() {
+        //データcurrentが-1ならすべて
+        //それ以外ならcurrentとstateが一致するものだけを返す。
+        return this.todos.filter(function(el) {
+          return this.current < 0 ? true : this.current === el.state
+        }, this)
+      }
+    },
+
     methods: {
       //ToDo 追加の管理
     doAdd: function(event, value) {
