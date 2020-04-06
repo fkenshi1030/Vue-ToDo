@@ -1,17 +1,60 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vue.jp App</title>
+  <title>Vue.js App</title>
+  <link rel="stylesheet" href="./main.css">
 </head>
 <body>
+
   <div id="app">
-    <!-- 絞り込みラジオボタン -->
-    <!-- ToDOテーブル -->
-    <!-- 新規登録フォーム -->
+    <h1>ToDoリスト</h1>
+
+    <label v-for="label in options" >
+      <input type="radio"
+        v-model="current"
+        v-bind:value="label.value">{{ label.label }}
+    </label>
+    （{{ computedTodos.length }} 件を表示）
+    <table>
+      <thead v-pre>
+        <tr>
+          <th class="id">ID</th>
+          <th class="comment">コメント</th>
+          <th class="state">状態</th>
+          <th class="button">-</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          v-for="item in computedTodos"
+          v-bind:key="item.id"
+          v-bind:class="{done:item.state}">
+          <th>{{ item.id }}</th>
+          <td>{{ item.comment }}</td>
+          <td class="state">
+            <button v-on:click="doChangeState(item)">
+              {{ labels[item.state] }}
+            </button>
+          </td>
+          <td class="button">
+            <button v-on:click.ctrl="doRemove(item)">
+              削除
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p>※削除ボタンはコントロールキーを押しながらクリックして下さい</p>
+
+    <h2>新しい作業の追加</h2>
+    <form class="add-form" v-on:submit.prevent="doAdd">
+      コメント <input type="text" ref="comment">
+      <button type="submit">追加</button>
+    </form>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-  <script src="main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="./main.js"></script>
 </body>
 </html>
